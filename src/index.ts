@@ -1,10 +1,10 @@
 import chalk from "chalk";
 import { EOL } from "os";
 
+import { Evaluator } from "./code-analysis/evaluator";
 import { SyntaxNode } from "./code-analysis/syntax-node";
 import { SyntaxToken } from "./code-analysis/syntax-token";
 import { SyntaxTree } from "./code-analysis/syntax-tree";
-import { Evaluator } from "./evaluator";
 // tslint:disable:no-console
 
 const eolRegEx = new RegExp(EOL + "$");
@@ -35,10 +35,6 @@ const prettyPrint = (
   indent: string = "",
   isLast: boolean = true,
 ) => {
-  // ├──
-  // └──
-  // │
-
   const marker = isLast ? "└──" : "├──";
 
   writeGray(indent);

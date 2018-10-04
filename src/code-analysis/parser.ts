@@ -43,7 +43,8 @@ export class Parser {
 
     while (
       this.current.kind === "PlusToken" ||
-      this.current.kind === "MinusToken"
+      this.current.kind === "MinusToken" ||
+      this.current.kind === "PercentToken"
     ) {
       const operatorToken = this.nextToken();
       const right = this.parseFactor();

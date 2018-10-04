@@ -60,6 +60,10 @@ export class Lexer {
       return new SyntaxToken("StarToken", this.position++, "*");
     }
 
+    if (this.current === "%") {
+      return new SyntaxToken("PercentToken", this.position++, "%");
+    }
+
     if (this.current === "(") {
       return new SyntaxToken("OpenParenthesesToken", this.position++, "(");
     }
@@ -69,7 +73,11 @@ export class Lexer {
     }
 
     this.diagnostics.push(`ERROR: bad character in input: '${this.current}'`);
-    return new SyntaxToken("BadToken", this.position++, this.text.substr(this.position - 1, 1));
+    return new SyntaxToken(
+      "BadToken",
+      this.position++,
+      this.text.substr(this.position - 1, 1),
+    );
   }
 
   private Next() {

@@ -1,7 +1,7 @@
-import { ExpressionSyntax } from "./code-analysis/expression-syntax";
-import { BinaryExpressionSyntax } from "./code-analysis/expression-syntax-binary";
-import { NumberExpressionSyntax } from "./code-analysis/expression-syntax-number";
-import { ParenthesizedExpressionSyntax } from "./code-analysis/expression-syntax-parenthesis";
+import { ExpressionSyntax } from "./expression-syntax";
+import { BinaryExpressionSyntax } from "./expression-syntax-binary";
+import { NumberExpressionSyntax } from "./expression-syntax-number";
+import { ParenthesizedExpressionSyntax } from "./expression-syntax-parenthesis";
 
 export class Evaluator {
   constructor(private root: ExpressionSyntax) {}
@@ -28,6 +28,8 @@ export class Evaluator {
           return left / right;
         case "StarToken":
           return left * right;
+        case "PercentToken":
+          return left % right;
         default:
           throw new Error(
             `Unexpected binary operator: ${node.operatorToken.kind}`,
@@ -39,8 +41,6 @@ export class Evaluator {
       return this.evaluateExpression(node.expression);
     }
 
-    throw new Error(
-      `Unexpected node: ${node}`,
-    );
+    throw new Error(`Unexpected node: ${node}`);
   }
 }
