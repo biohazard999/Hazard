@@ -5,9 +5,12 @@
   "main": "./dist/index.js",
   "scripts": {
     "start": "node ./dist/index.js",
+    "prestart": "npm run re-build",
     "test": "test",
     "build": "tsc",
-    "lint": "tslint -p ./tsconfig.json"
+    "re-build": "npm run clean && npm run build",
+    "lint": "tslint -p ./tsconfig.json",
+    "clean": "rimraf dist"
   },
   "repository": {
     "type": "git",
@@ -28,9 +31,14 @@
   },
   "homepage": "https://github.com/biohazard999/Hazard#readme",
   "devDependencies": {
+    "@types/node": "^10.11.4",
+    "rimraf": "^2.6.2",
     "tslint": "^5.11.0",
     "tslint-language-service": "^0.9.9",
-    "typescript": "^3.1.1"
+    "typescript": "^3.1.1",
+    "typestrict": "^1.0.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "chalk": "^2.4.1"
+  }
 }
