@@ -4,7 +4,9 @@
   "description": "Hazard is a language and a compiler to produce IL written in typescript",
   "main": "dist\\index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "build": "tsc",
+    "lint": "tslint -p ./tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -23,5 +25,11 @@
   "bugs": {
     "url": "https://github.com/biohazard999/Hazard/issues"
   },
-  "homepage": "https://github.com/biohazard999/Hazard#readme"
+  "homepage": "https://github.com/biohazard999/Hazard#readme",
+  "devDependencies": {
+    "tslint": "^5.11.0",
+    "tslint-language-service": "^0.9.9",
+    "typescript": "^3.1.1"
+  },
+  "dependencies": {}
 }
