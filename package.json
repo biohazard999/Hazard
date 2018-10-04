@@ -1,0 +1,27 @@
+{
+  "name": "hazard",
+  "version": "0.0.1-alpha",
+  "description": "Hazard is a language and a compiler to produce IL written in typescript",
+  "main": "dist\\index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/biohazard999/Hazard.git"
+  },
+  "keywords": [
+    "Hazard",
+    "compiler",
+    "language",
+    "IL",
+    ".NET",
+    "typescript"
+  ],
+  "author": "Manuel Grundner",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/biohazard999/Hazard/issues"
+  },
+  "homepage": "https://github.com/biohazard999/Hazard#readme"
+}
