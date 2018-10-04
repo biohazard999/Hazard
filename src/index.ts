@@ -105,4 +105,4 @@ const prettyPrint = (
       }
     }
   }
-})();
+})().catch(console.error);
