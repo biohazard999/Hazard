@@ -13,8 +13,11 @@ Hazard is a language and a compiler to produce IL written in typescript.
 
 ## Building & Consumption
 
-Run `npm install` to restore the dependencies
+Run `npm install` to restore the dependencies, then you can just `npm start` to start the REPL.
 
-* build:&nbsp;&nbsp;`npm run build`&nbsp; Builds the project
-* test:&nbsp;&nbsp;&nbsp;&nbsp;`npm run test`&nbsp;&nbsp;&nbsp; Runs the tests
-* start:&nbsp;&nbsp;&nbsp;`npm start`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Starts the repl
+| Action   | Command         | Description            |
+|----------|-----------------|------------------------|
+| build    | `npm run build` | Builds the project     |
+| test     | `npm run test`  | Runs the tests         |
+| start    | `npm start`     | Starts the REPL        |
+| clean    | `npm run clean` | Cleans build artifacts |
