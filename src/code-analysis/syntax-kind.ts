@@ -5,6 +5,7 @@ export type SyntaxKind =
   | "MinusToken"
   | "SlashToken"
   | "StarToken"
+  | "PercentToken"
   | "OpenParenthesesToken"
   | "CloseParenthesesToken"
   | "BadToken"
