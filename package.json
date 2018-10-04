@@ -10,7 +10,8 @@
     "build": "tsc",
     "re-build": "npm run clean && npm run build",
     "lint": "tslint -p ./tsconfig.json",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "commit": "npx git-cz"
   },
   "repository": {
     "type": "git",
@@ -31,7 +32,11 @@
   },
   "homepage": "https://github.com/biohazard999/Hazard#readme",
   "devDependencies": {
+    "@commitlint/cli": "^7.1.2",
+    "@commitlint/config-conventional": "^7.1.2",
     "@types/node": "^10.11.4",
+    "cz-conventional-changelog": "^2.1.0",
+    "husky": "^1.1.0",
     "rimraf": "^2.6.2",
     "tslint": "^5.11.0",
     "tslint-language-service": "^0.9.9",
@@ -40,5 +45,17 @@
   },
   "dependencies": {
     "chalk": "^2.4.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run lint && npm run build",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   }
 }

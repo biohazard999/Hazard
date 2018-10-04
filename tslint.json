@@ -5,6 +5,9 @@
     "typestrict"
   ],
   "jsRules": {},
-  "rules": {},
+  "rules": {
+    "no-unused-variable": false,
+    "variable-name": false    
+  },
   "rulesDirectory": []
 }

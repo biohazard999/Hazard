@@ -10,7 +10,7 @@ export class SyntaxTree {
 
   constructor(
     public readonly root: ExpressionSyntax,
-    endOfFileToken: SyntaxToken,
+    _endOfFileToken: SyntaxToken,
     public readonly diagnostics: string[],
   ) {}
 }
