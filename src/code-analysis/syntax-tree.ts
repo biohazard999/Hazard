@@ -10,7 +10,6 @@ export class SyntaxTree {
 
   constructor(
     public readonly root: ExpressionSyntax,
-    // tslint:disable-next-line:variable-name
     _endOfFileToken: SyntaxToken,
     public readonly diagnostics: string[],
   ) {}

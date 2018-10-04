@@ -6,7 +6,8 @@
   ],
   "jsRules": {},
   "rules": {
-    "no-unused-variable": false
+    "no-unused-variable": false,
+    "variable-name": false    
   },
   "rulesDirectory": []
 }
