@@ -1,0 +1,11 @@
+{
+    "cSpell.words": [
+        "cobertura",
+        "commitlint",
+        "junit",
+        "typestrict"
+    ],
+    "jest.showCoverageOnLoad": false,
+    "jest.enableCodeLens": true,
+    "jest.autoEnable": true
+}
