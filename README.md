@@ -1,5 +1,7 @@
 # Hazard
 
+[![Build status](https://mgrundner.visualstudio.com/Scissors/_apis/build/status/github/Hazard-CI)](https://mgrundner.visualstudio.com/Scissors/_build/latest?definitionId=48)
+
 Hazard is a language and a compiler to produce IL written in typescript.
 
 > This is a WIP and not production ready yet!
