@@ -6,12 +6,13 @@
   "scripts": {
     "start": "node ./dist/index.js",
     "prestart": "npm run re-build",
-    "test": "test",
+    "test": "npx jest",
     "build": "tsc",
     "re-build": "npm run clean && npm run build",
     "lint": "tslint -p ./tsconfig.json",
-    "clean": "rimraf dist",
-    "commit": "npx git-cz"
+    "clean": "rimraf ./dist && rimraf ./.test",
+    "commit": "npx git-cz",
+    "cov": "html-pages ./.test/coverage/lcov-report -o"
   },
   "repository": {
     "type": "git",
@@ -34,10 +35,15 @@
   "devDependencies": {
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
+    "@types/jest": "^23.3.3",
     "@types/node": "^10.11.4",
     "cz-conventional-changelog": "^2.1.0",
+    "html-pages": "^2.1.2",
     "husky": "^1.1.0",
+    "jest": "^23.6.0",
+    "jest-junit": "^5.2.0",
     "rimraf": "^2.6.2",
+    "ts-jest": "^23.10.3",
     "tslint": "^5.11.0",
     "tslint-language-service": "^0.9.9",
     "typescript": "^3.1.1",
@@ -54,8 +60,44 @@
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint",
-      "pre-push": "npm run lint && npm run build",
+      "pre-push": "npm run lint && npm run build && npm run test",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
+  },
+  "jest": {
+    "reporters": [
+      "default",
+      "jest-junit"
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{ts}",
+      "!**/node_modules/**",
+      "!**/dist/**"
+    ],
+    "coverageReporters": [
+      "text",
+      "json",
+      "lcov",
+      "cobertura"
+    ],
+    "coverageDirectory": "./.test/coverage",
+    "errorOnDeprecated": true,
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  },
+  "jest-junit": {
+    "outputDirectory": "./.test",
+    "outputName": "./junit.xml"
   }
 }
