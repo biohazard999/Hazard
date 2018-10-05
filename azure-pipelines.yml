@@ -1,0 +1,78 @@
+queue:
+  name: Hosted
+  demands: npm
+
+steps:
+- task: NodeTool@0
+  displayName: 'Use Node 8.x'
+  inputs:
+    versionSpec: 8.x
+
+
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    verbose: false
+
+
+- task: Npm@1
+  displayName: 'npm run build'
+  inputs:
+    command: custom
+
+    verbose: false
+
+    customCommand: 'run build'
+
+
+- task: Npm@1
+  displayName: 'npm run lint'
+  inputs:
+    command: custom
+
+    verbose: false
+
+    customCommand: 'run lint'
+
+
+- task: Npm@1
+  displayName: 'npm run test'
+  inputs:
+    command: custom
+
+    verbose: false
+
+    customCommand: 'run test'
+
+
+- task: PublishTestResults@2
+  displayName: 'Publish Test Results .test/junit.xml'
+  inputs:
+    testResultsFiles: .test/junit.xml
+
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish code coverage (Windows)'
+  inputs:
+    codeCoverageTool: Cobertura
+
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)\.test\coverage\cobertura-coverage.xml'
+
+    reportDirectory: '$(System.DefaultWorkingDirectory)\.test\coverage\lcov-report'
+
+    failIfCoverageEmpty: true
+
+  condition: eq(variables['Agent.OS'], 'Windows_NT')
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish code coverage (Linux/Darwin)'
+  inputs:
+    codeCoverageTool: Cobertura
+
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/.test/coverage/cobertura-coverage.xml'
+
+    reportDirectory: '$(System.DefaultWorkingDirectory)/.test/coverage/lcov-report'
+
+    failIfCoverageEmpty: true
+
+  condition: ne(variables['Agent.OS'], 'Windows_NT')
