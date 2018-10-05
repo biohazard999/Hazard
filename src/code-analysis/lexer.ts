@@ -89,6 +89,7 @@ export function isDigit(c: string) {
   if (c.length > 1) {
     return false;
   }
+
   const n = c.charCodeAt(0);
   const charCodeZero = "0".charCodeAt(0);
   const charCodeNine = "9".charCodeAt(0);
