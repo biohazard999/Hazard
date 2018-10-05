@@ -102,7 +102,7 @@ describe("the lexer", () => {
         expect(isWhiteSpace(" ")).toBeTruthy();
       });
 
-      it("should ne false for an empty string", () => {
+      it("should be false for an empty string", () => {
         expect(isWhiteSpace("")).toBeFalsy();
       });
 
