@@ -7,74 +7,74 @@ describe("the lexer", () => {
 
   it("should return a whitespace token for a whitespace", () => {
     const lexer = arrange(" ");
-    const token = lexer.nextToken();
+    const token = lexer.lex();
     expect(token.kind).toBe("WhitespaceToken");
   });
 
   it("should return a number token for a number", () => {
     const lexer = arrange("1");
-    const token = lexer.nextToken();
+    const token = lexer.lex();
     expect(token.kind).toBe("NumberToken");
   });
 
   it("should return a plus token for a +", () => {
     const lexer = arrange("+");
-    const token = lexer.nextToken();
+    const token = lexer.lex();
     expect(token.kind).toBe("PlusToken");
   });
 
   it("should return a plus token for a -", () => {
     const lexer = arrange("-");
-    const token = lexer.nextToken();
+    const token = lexer.lex();
     expect(token.kind).toBe("MinusToken");
   });
 
   it("should return a star token for a *", () => {
     const lexer = arrange("*");
-    const token = lexer.nextToken();
+    const token = lexer.lex();
     expect(token.kind).toBe("StarToken");
   });
 
   it("should return a slash token for a /", () => {
     const lexer = arrange("/");
-    const token = lexer.nextToken();
+    const token = lexer.lex();
     expect(token.kind).toBe("SlashToken");
   });
 
   it("should return a percent token for a %", () => {
     const lexer = arrange("%");
-    const token = lexer.nextToken();
+    const token = lexer.lex();
     expect(token.kind).toBe("PercentToken");
   });
 
   it("should return a open parentheses token for a (", () => {
     const lexer = arrange("(");
-    const token = lexer.nextToken();
+    const token = lexer.lex();
     expect(token.kind).toBe("OpenParenthesesToken");
   });
 
   it("should return a close parentheses token for a )", () => {
     const lexer = arrange(")");
-    const token = lexer.nextToken();
+    const token = lexer.lex();
     expect(token.kind).toBe("CloseParenthesesToken");
   });
 
   it("should return a bad token for a ~", () => {
     const lexer = arrange("~");
-    const token = lexer.nextToken();
+    const token = lexer.lex();
     expect(token.kind).toBe("BadToken");
   });
 
   it("should report diagnostics for a bad token", () => {
     const lexer = arrange("~");
-    lexer.nextToken();
+    lexer.lex();
     expect(lexer.diagnostics).toContain("ERROR: bad character in input: '~'");
   });
 
   it("should end with an end of file token", () => {
     const lexer = arrange("~");
-    lexer.nextToken();
-    const token = lexer.nextToken();
+    lexer.lex();
+    const token = lexer.lex();
     expect(token.kind).toBe("EndOfFileToken");
   });
 

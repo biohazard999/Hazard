@@ -23,7 +23,7 @@ export class Parser {
 
     let token: SyntaxToken;
     do {
-      token = lexer.nextToken();
+      token = lexer.lex();
       if (token.kind !== "WhitespaceToken" && token.kind !== "BadToken") {
         this.tokens.push(token);
       }

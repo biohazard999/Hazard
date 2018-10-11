@@ -14,7 +14,7 @@ export class Lexer {
 
   constructor(private readonly text: string) {}
 
-  public nextToken(): SyntaxToken {
+  public lex(): SyntaxToken {
     if (this.position >= this.text.length) {
       return new SyntaxToken("EndOfFileToken", this.position, "\0");
     }
@@ -44,32 +44,21 @@ export class Lexer {
       return new SyntaxToken("WhitespaceToken", start, text);
     }
 
-    if (this.current === "+") {
-      return new SyntaxToken("PlusToken", this.position++, "+");
-    }
-
-    if (this.current === "-") {
-      return new SyntaxToken("MinusToken", this.position++, "-");
-    }
-
-    if (this.current === "/") {
-      return new SyntaxToken("SlashToken", this.position++, "/");
-    }
-
-    if (this.current === "*") {
-      return new SyntaxToken("StarToken", this.position++, "*");
-    }
-
-    if (this.current === "%") {
-      return new SyntaxToken("PercentToken", this.position++, "%");
-    }
-
-    if (this.current === "(") {
-      return new SyntaxToken("OpenParenthesesToken", this.position++, "(");
-    }
-
-    if (this.current === ")") {
-      return new SyntaxToken("CloseParenthesesToken", this.position++, ")");
+    switch (this.current) {
+      case "+":
+        return new SyntaxToken("PlusToken", this.position++, "+");
+      case "-":
+        return new SyntaxToken("MinusToken", this.position++, "-");
+      case "/":
+        return new SyntaxToken("SlashToken", this.position++, "/");
+      case "*":
+        return new SyntaxToken("StarToken", this.position++, "*");
+      case "%":
+        return new SyntaxToken("PercentToken", this.position++, "%");
+      case "(":
+        return new SyntaxToken("OpenParenthesesToken", this.position++, "(");
+      case ")":
+        return new SyntaxToken("CloseParenthesesToken", this.position++, ")");
     }
 
     this.diagnostics.push(`ERROR: bad character in input: '${this.current}'`);
