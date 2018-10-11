@@ -8,11 +8,12 @@
     "prestart": "npm run re-build",
     "test": "npx jest",
     "build": "tsc",
-    "re-build": "npm run clean && npm run build",
+    "rebuild": "npm run clean && npm run build",
     "lint": "tslint -p ./tsconfig.json",
     "clean": "rimraf ./dist && rimraf ./.test",
     "commit": "npx git-cz",
-    "cov": "html-pages ./.test/coverage/lcov-report -o"
+    "cov": "html-pages ./.test/coverage/lcov-report -o",
+    "f-rebuild": "git clean -ffxd && npm install && npm run rebuild && npm run test"
   },
   "repository": {
     "type": "git",
