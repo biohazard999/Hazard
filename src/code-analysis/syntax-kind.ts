@@ -10,6 +10,6 @@ export type SyntaxKind =
   | "CloseParenthesesToken"
   | "BadToken"
   | "EndOfFileToken"
-  | "NumberExpression"
+  | "LiteralExpression"
   | "BinaryExpression"
   | "ParenthesizedExpression";

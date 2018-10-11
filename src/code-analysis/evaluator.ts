@@ -1,6 +1,6 @@
 import { ExpressionSyntax } from "./expression-syntax";
 import { BinaryExpressionSyntax } from "./expression-syntax-binary";
-import { NumberExpressionSyntax } from "./expression-syntax-number";
+import { LiteralExpressionSyntax } from "./expression-syntax-literal";
 import { ParenthesizedExpressionSyntax } from "./expression-syntax-parenthesis";
 
 export class Evaluator {
@@ -11,8 +11,8 @@ export class Evaluator {
   }
 
   private evaluateExpression(node: ExpressionSyntax): number {
-    if (node instanceof NumberExpressionSyntax) {
-      return node.numberToken.value as number;
+    if (node instanceof LiteralExpressionSyntax) {
+      return node.literalToken.value as number;
     }
 
     if (node instanceof BinaryExpressionSyntax) {

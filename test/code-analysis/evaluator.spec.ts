@@ -1,7 +1,7 @@
 import { Evaluator } from "../../src/code-analysis/evaluator";
 import { ExpressionSyntax } from "../../src/code-analysis/expression-syntax";
 import { BinaryExpressionSyntax } from "../../src/code-analysis/expression-syntax-binary";
-import { NumberExpressionSyntax } from "../../src/code-analysis/expression-syntax-number";
+import { LiteralExpressionSyntax } from "../../src/code-analysis/expression-syntax-literal";
 import { ParenthesizedExpressionSyntax } from "../../src/code-analysis/expression-syntax-parenthesis";
 import { SyntaxKind } from "../../src/code-analysis/syntax-kind";
 import { SyntaxToken } from "../../src/code-analysis/syntax-token";
@@ -11,9 +11,9 @@ describe("the evaluator", () => {
     return new Evaluator(syntax);
   }
 
-  function createNumberExpression(number: number) {
-    return new NumberExpressionSyntax(
-      new SyntaxToken("NumberExpression", 0, number.toString(), number),
+  function createLiteralExpression(number: number) {
+    return new LiteralExpressionSyntax(
+      new SyntaxToken("LiteralExpression", 0, number.toString(), number),
     );
   }
 
@@ -23,9 +23,9 @@ describe("the evaluator", () => {
     right: number | SyntaxToken,
   ) {
     return new BinaryExpressionSyntax(
-      typeof left === "number" ? createNumberExpression(left) : left,
+      typeof left === "number" ? createLiteralExpression(left) : left,
       new SyntaxToken(operator),
-      typeof right === "number" ? createNumberExpression(right) : right,
+      typeof right === "number" ? createLiteralExpression(right) : right,
     );
   }
 
@@ -38,7 +38,7 @@ describe("the evaluator", () => {
   }
 
   it("should evaluate a single number", () => {
-    const evaluator = arrange(createNumberExpression(1));
+    const evaluator = arrange(createLiteralExpression(1));
 
     expect(evaluator.evaluate()).toBe(1);
   });
@@ -155,7 +155,7 @@ describe("the evaluator", () => {
           createParenthesizedExpression(
             createBinaryExpression("PlusToken", 1, 2),
           ),
-          createNumberExpression(2),
+          createLiteralExpression(2),
         );
         const evaluator = arrange(tree);
 

@@ -1,6 +1,6 @@
 import { ExpressionSyntax } from "./expression-syntax";
 import { BinaryExpressionSyntax } from "./expression-syntax-binary";
-import { NumberExpressionSyntax } from "./expression-syntax-number";
+import { LiteralExpressionSyntax } from "./expression-syntax-literal";
 import { ParenthesizedExpressionSyntax } from "./expression-syntax-parenthesis";
 import { Lexer } from "./lexer";
 import { SyntaxKind } from "./syntax-kind";
@@ -34,7 +34,7 @@ export class Parser {
 
   public parse(): SyntaxTree {
     const expression = this.parseExpression();
-    const endOfFileToken = this.match("EndOfFileToken");
+    const endOfFileToken = this.matchToken("EndOfFileToken");
     return new SyntaxTree(expression, endOfFileToken, this.diagnostics);
   }
 
@@ -83,7 +83,7 @@ export class Parser {
     return current;
   }
 
-  private match(kind: SyntaxKind) {
+  private matchToken(kind: SyntaxKind) {
     if (this.current.kind === kind) {
       return this.nextToken();
     }
@@ -101,11 +101,11 @@ export class Parser {
     if (this.current.kind === "OpenParenthesesToken") {
       const left = this.nextToken();
       const expression = this.parseExpression();
-      const right = this.match("CloseParenthesesToken");
+      const right = this.matchToken("CloseParenthesesToken");
       return new ParenthesizedExpressionSyntax(left, expression, right);
     }
 
-    const numberToken = this.match("NumberToken");
-    return new NumberExpressionSyntax(numberToken);
+    const numberToken = this.matchToken("NumberToken");
+    return new LiteralExpressionSyntax(numberToken);
   }
 }
