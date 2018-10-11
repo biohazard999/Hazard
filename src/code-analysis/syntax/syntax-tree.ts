@@ -1,6 +1,6 @@
+import { ExpressionSyntax } from "./expression-syntax";
 import { Parser } from "./parser";
 import { SyntaxToken } from "./syntax-token";
-import { ExpressionSyntax } from "./syntax/expression-syntax";
 
 export class SyntaxTree {
   public static parse(text: string) {

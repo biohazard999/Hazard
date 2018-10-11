@@ -1,9 +1,9 @@
 import { EOL } from "os";
 
 import { Evaluator } from "../code-analysis/evaluator";
-import { SyntaxNode } from "../code-analysis/syntax-node";
-import { SyntaxToken } from "../code-analysis/syntax-token";
-import { SyntaxTree } from "../code-analysis/syntax-tree";
+import { SyntaxNode } from "../code-analysis/syntax/syntax-node";
+import { SyntaxToken } from "../code-analysis/syntax/syntax-token";
+import { SyntaxTree } from "../code-analysis/syntax/syntax-tree";
 import {
   clear,
   log,

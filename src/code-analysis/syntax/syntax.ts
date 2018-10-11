@@ -1,4 +1,4 @@
-import { SyntaxKind } from "../syntax-kind";
+import { SyntaxKind } from "./syntax-kind";
 
 export function unaryOperatorPrecedenceOf(kind: SyntaxKind) {
   switch (kind) {

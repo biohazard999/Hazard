@@ -1,13 +1,13 @@
+import { ExpressionSyntax } from "./expression-syntax";
+import { BinaryExpressionSyntax } from "./expression-syntax-binary";
+import { LiteralExpressionSyntax } from "./expression-syntax-literal";
+import { ParenthesizedExpressionSyntax } from "./expression-syntax-parenthesis";
+import { UnaryExpressionSyntax } from "./expression-syntax-unary";
 import { Lexer } from "./lexer";
+import { binaryOperatorPrecedenceOf, unaryOperatorPrecedenceOf } from "./syntax";
 import { SyntaxKind } from "./syntax-kind";
 import { SyntaxToken } from "./syntax-token";
 import { SyntaxTree } from "./syntax-tree";
-import { ExpressionSyntax } from "./syntax/expression-syntax";
-import { BinaryExpressionSyntax } from "./syntax/expression-syntax-binary";
-import { LiteralExpressionSyntax } from "./syntax/expression-syntax-literal";
-import { ParenthesizedExpressionSyntax } from "./syntax/expression-syntax-parenthesis";
-import { UnaryExpressionSyntax } from "./syntax/expression-syntax-unary";
-import { binaryOperatorPrecedenceOf, unaryOperatorPrecedenceOf } from "./syntax/syntax";
 
 export class Parser {
   public diagnostics: string[] = [];
