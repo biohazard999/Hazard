@@ -2,10 +2,10 @@
   "name": "hazard",
   "version": "0.0.1-alpha",
   "description": "Hazard is a language and a compiler to produce IL written in typescript",
-  "main": "./dist/index.js",
+  "main": "./dist/src/index.js",
   "scripts": {
-    "start": "node ./dist/index.js",
-    "prestart": "npm run re-build",
+    "start": "node ./dist/src/index.js",
+    "prestart": "npm run rebuild",
     "test": "npx jest",
     "build": "tsc",
     "rebuild": "npm run clean && npm run build",
