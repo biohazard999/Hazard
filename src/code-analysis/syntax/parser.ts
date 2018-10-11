@@ -4,7 +4,10 @@ import { LiteralExpressionSyntax } from "./expression-syntax-literal";
 import { ParenthesizedExpressionSyntax } from "./expression-syntax-parenthesis";
 import { UnaryExpressionSyntax } from "./expression-syntax-unary";
 import { Lexer } from "./lexer";
-import { binaryOperatorPrecedenceOf, unaryOperatorPrecedenceOf } from "./syntax";
+import {
+  binaryOperatorPrecedenceOf,
+  unaryOperatorPrecedenceOf,
+} from "./syntax";
 import { SyntaxKind } from "./syntax-kind";
 import { SyntaxToken } from "./syntax-token";
 import { SyntaxTree } from "./syntax-tree";
@@ -66,12 +69,16 @@ export class Parser {
 
   private parseExpression(parentPrecedence: number = 0): ExpressionSyntax {
     let left: ExpressionSyntax;
-    const unaryOperatorPrecedence = unaryOperatorPrecedenceOf(this.current.kind);
-    if (unaryOperatorPrecedence !== 0 && unaryOperatorPrecedence >= parentPrecedence) {
+    const unaryOperatorPrecedence = unaryOperatorPrecedenceOf(
+      this.current.kind,
+    );
+    if (
+      unaryOperatorPrecedence !== 0 &&
+      unaryOperatorPrecedence >= parentPrecedence
+    ) {
       const operatorToken = this.nextToken();
       const operand = this.parseExpression(unaryOperatorPrecedence);
       left = new UnaryExpressionSyntax(operatorToken, operand);
-
     } else {
       left = this.parsePrimaryExpression();
     }
@@ -90,14 +97,20 @@ export class Parser {
   }
 
   private parsePrimaryExpression(): ExpressionSyntax {
-    if (this.current.kind === "OpenParenthesesToken") {
-      const left = this.nextToken();
-      const expression = this.parseExpression();
-      const right = this.matchToken("CloseParenthesesToken");
-      return new ParenthesizedExpressionSyntax(left, expression, right);
+    switch (this.current.kind) {
+      case "OpenParenthesesToken":
+        const left = this.nextToken();
+        const expression = this.parseExpression();
+        const right = this.matchToken("CloseParenthesesToken");
+        return new ParenthesizedExpressionSyntax(left, expression, right);
+      case "TrueKeyword":
+      case "FalseKeyword":
+        const keywordToken = this.nextToken();
+        const value = keywordToken.kind === "TrueKeyword";
+        return new LiteralExpressionSyntax(keywordToken, value);
+      default:
+        const numberToken = this.matchToken("NumberToken");
+        return new LiteralExpressionSyntax(numberToken);
     }
-
-    const numberToken = this.matchToken("NumberToken");
-    return new LiteralExpressionSyntax(numberToken);
   }
 }

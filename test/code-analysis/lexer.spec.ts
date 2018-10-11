@@ -1,4 +1,8 @@
-import { isDigit, isWhiteSpace, Lexer } from "../../src/code-analysis/syntax/lexer";
+import {
+  isDigit,
+  isWhiteSpace,
+  Lexer,
+} from "../../src/code-analysis/syntax/lexer";
 
 describe("the lexer", () => {
   function arrange(str: string) {

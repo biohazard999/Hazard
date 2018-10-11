@@ -1,11 +1,13 @@
+import { keywordKindOf } from "./syntax";
 import { SyntaxToken } from "./syntax-token";
 
 export class Lexer {
   public get current(): string {
-    if (this.position >= this.text.length) {
-      return "\0";
-    }
-    return this.text[this.position];
+    return this.peek(0);
+  }
+
+  public get lookahead(): string {
+    return this.peek(1);
   }
 
   public diagnostics: string[] = [];
@@ -22,7 +24,7 @@ export class Lexer {
     if (isDigit(this.current)) {
       const start = this.position;
       while (isDigit(this.current)) {
-        this.Next();
+        this.next();
       }
       const length = this.position - start;
       const text = this.text.substr(start, length);
@@ -37,11 +39,24 @@ export class Lexer {
     if (isWhiteSpace(this.current)) {
       const start = this.position;
       while (isWhiteSpace(this.current)) {
-        this.Next();
+        this.next();
       }
       const length = this.position - start;
       const text = this.text.substr(start, length);
       return new SyntaxToken("WhitespaceToken", start, text);
+    }
+
+    if (isLetter(this.current)) {
+      const start = this.position;
+
+      while (isLetter(this.current)) {
+        this.next();
+      }
+
+      const length = this.position - start;
+      const text = this.text.substr(start, length);
+      const kind = keywordKindOf(text);
+      return new SyntaxToken(kind, start, text, null);
     }
 
     switch (this.current) {
@@ -59,6 +74,26 @@ export class Lexer {
         return new SyntaxToken("OpenParenthesesToken", this.position++, "(");
       case ")":
         return new SyntaxToken("CloseParenthesesToken", this.position++, ")");
+      case "&":
+        if (this.lookahead === "&") {
+          return new SyntaxToken("AmpersandAmpersandToken", this.position += 2, "&&");
+        }
+        break;
+      case "|":
+        if (this.lookahead === "|") {
+          return new SyntaxToken("PipePipeToken", this.position += 2, "||");
+        }
+        break;
+      case "=":
+        if (this.lookahead === "=") {
+          return new SyntaxToken("EqualsEqualsToken", this.position += 2, "==");
+        }
+        break;
+      case "!":
+        if (this.lookahead === "=") {
+          return new SyntaxToken("BangEqualsToken", this.position += 2, "!=");
+        }
+        return new SyntaxToken("BangToken", this.position++, "!", null);
     }
 
     this.diagnostics.push(`ERROR: bad character in input: '${this.current}'`);
@@ -69,7 +104,17 @@ export class Lexer {
     );
   }
 
-  private Next() {
+  private peek(offset: number) {
+    const index = this.position + offset;
+
+    if (index >= this.text.length) {
+      return "\0";
+    }
+
+    return this.text[index];
+  }
+
+  private next() {
     this.position++;
   }
 }
@@ -88,4 +133,8 @@ export function isDigit(c: string) {
 
 export function isWhiteSpace(c: string) {
   return c === " ";
+}
+
+export function isLetter(c: string) {
+  return c.toUpperCase() !== c.toLowerCase();
 }

@@ -1,5 +1,6 @@
 import { EOL } from "os";
 
+import { Binder } from "../code-analysis/binding/binder";
 import { Evaluator } from "../code-analysis/evaluator";
 import { SyntaxNode } from "../code-analysis/syntax/syntax-node";
 import { SyntaxToken } from "../code-analysis/syntax/syntax-token";
@@ -91,20 +92,24 @@ export class Repl {
       }
 
       const syntaxTree = SyntaxTree.parse(line);
+      const binder = new Binder();
+      const boundExpression = binder.bindExpression(syntaxTree.root);
+
+      const diagnostics = [...syntaxTree.diagnostics, ...binder.diagnostics];
 
       if (debug) {
         this.prettyPrint(syntaxTree.root);
       }
 
-      if (syntaxTree.diagnostics.length === 0) {
-        const evaluator = new Evaluator(syntaxTree.root);
+      if (diagnostics.length === 0) {
+        const evaluator = new Evaluator(boundExpression);
         const result = evaluator.evaluate();
 
         writeGreen(`${result}`);
         write("\n");
       } else {
-        for (const diagnostics of syntaxTree.diagnostics) {
-          writeRed(diagnostics);
+        for (const diagnostic of diagnostics) {
+          writeRed(diagnostic);
           write("\n");
         }
       }

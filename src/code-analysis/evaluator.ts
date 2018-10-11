@@ -1,58 +1,63 @@
-import { ExpressionSyntax } from "./syntax/expression-syntax";
-import { BinaryExpressionSyntax } from "./syntax/expression-syntax-binary";
-import { LiteralExpressionSyntax } from "./syntax/expression-syntax-literal";
-import { ParenthesizedExpressionSyntax } from "./syntax/expression-syntax-parenthesis";
-import { UnaryExpressionSyntax } from "./syntax/expression-syntax-unary";
+import { BoundBinaryExpression } from "./binding/bound-binary-expression";
+import { BoundExpression } from "./binding/bound-expression";
+import { BoundLiteralExpression } from "./binding/bound-literal-expression";
+import { BoundUnaryExpression } from "./binding/bound-unary-expression";
 
 export class Evaluator {
-  constructor(private root: ExpressionSyntax) {}
+  constructor(private root: BoundExpression) {}
 
   public evaluate() {
     return this.evaluateExpression(this.root);
   }
 
-  private evaluateExpression(node: ExpressionSyntax): number {
-    if (node instanceof LiteralExpressionSyntax) {
-      return node.literalToken.value as number;
+  private evaluateExpression(node: BoundExpression): any {
+    if (node instanceof BoundLiteralExpression) {
+      return node.value;
     }
 
-    if (node instanceof UnaryExpressionSyntax) {
+    if (node instanceof BoundUnaryExpression) {
       const operand = this.evaluateExpression(node.operand);
-      if (node.operatorToken.kind === "PlusToken") {
-        return operand;
-      } else if (node.operatorToken.kind === "MinusToken") {
-        return -operand;
-      } else {
-        throw new Error(`Unexpected unary operator ${node.kind}`);
+
+      switch (node.operator.kind) {
+        case "Identity":
+          return operand;
+        case "Negation":
+          return -operand;
+        case "LogicalNegation":
+          return !operand;
+        default:
+          throw new Error(`Unexpected unary operator ${node.operand}`);
       }
     }
 
-    if (node instanceof BinaryExpressionSyntax) {
+    if (node instanceof BoundBinaryExpression) {
       const left = this.evaluateExpression(node.left);
       const right = this.evaluateExpression(node.right);
 
-      switch (node.operatorToken.kind) {
-        case "PlusToken":
-          return left + right;
-        case "MinusToken":
+      switch (node.operator.kind) {
+        case "Addition":
+          const l: number = left;
+          const r: number = right;
+          return l + r;
+        case "Subtraction":
           return left - right;
-        case "SlashToken":
-          return left / right;
-        case "StarToken":
+        case "Multiplication":
           return left * right;
-        case "PercentToken":
-          return left % right;
+        case "Division":
+          return left / right;
+        case "LogicalAnd":
+          return left && right;
+        case "LogicalOr":
+          return left || right;
+        case "Equals":
+          return left === right;
+        case "NotEquals":
+          return !(left === right);
         default:
-          throw new Error(
-            `Unexpected binary operator: ${node.operatorToken.kind}`,
-          );
+          throw new Error(`Unexpected binary operator ${node.operator}`);
       }
     }
 
-    if (node instanceof ParenthesizedExpressionSyntax) {
-      return this.evaluateExpression(node.expression);
-    }
-
-    throw new Error(`Unexpected node: ${node}`);
+    throw new Error(`Unexpected node ${node.kind}`);
   }
 }

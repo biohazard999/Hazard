@@ -9,7 +9,7 @@ export class LiteralExpressionSyntax extends ExpressionSyntax {
     return [this.literalToken];
   }
 
-  constructor(public readonly literalToken: SyntaxToken) {
+  constructor(public readonly literalToken: SyntaxToken, public readonly value?: any) {
     super();
   }
 }
