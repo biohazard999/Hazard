@@ -18,9 +18,9 @@ export class Evaluator {
 
     if (node instanceof UnaryExpressionSyntax) {
       const operand = this.evaluateExpression(node.operand);
-      if (node.kind === "PlusToken") {
+      if (node.operatorToken.kind === "PlusToken") {
         return operand;
-      } else if (node.kind === "MinusToken") {
+      } else if (node.operatorToken.kind === "MinusToken") {
         return -operand;
       } else {
         throw new Error(`Unexpected unary operator ${node.kind}`);
