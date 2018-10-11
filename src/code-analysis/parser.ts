@@ -1,11 +1,13 @@
-import { ExpressionSyntax } from "./expression-syntax";
-import { BinaryExpressionSyntax } from "./expression-syntax-binary";
-import { LiteralExpressionSyntax } from "./expression-syntax-literal";
-import { ParenthesizedExpressionSyntax } from "./expression-syntax-parenthesis";
 import { Lexer } from "./lexer";
 import { SyntaxKind } from "./syntax-kind";
 import { SyntaxToken } from "./syntax-token";
 import { SyntaxTree } from "./syntax-tree";
+import { ExpressionSyntax } from "./syntax/expression-syntax";
+import { BinaryExpressionSyntax } from "./syntax/expression-syntax-binary";
+import { LiteralExpressionSyntax } from "./syntax/expression-syntax-literal";
+import { ParenthesizedExpressionSyntax } from "./syntax/expression-syntax-parenthesis";
+import { UnaryExpressionSyntax } from "./syntax/expression-syntax-unary";
+import { binaryOperatorPrecedenceOf, unaryOperatorPrecedenceOf } from "./syntax/syntax";
 
 export class Parser {
   public diagnostics: string[] = [];
@@ -38,37 +40,6 @@ export class Parser {
     return new SyntaxTree(expression, endOfFileToken, this.diagnostics);
   }
 
-  private parseTerm(): ExpressionSyntax {
-    let left = this.parseFactor();
-
-    while (
-      this.current.kind === "PlusToken" ||
-      this.current.kind === "MinusToken" ||
-      this.current.kind === "PercentToken"
-    ) {
-      const operatorToken = this.nextToken();
-      const right = this.parseFactor();
-      left = new BinaryExpressionSyntax(left, operatorToken, right);
-    }
-
-    return left;
-  }
-
-  private parseFactor(): ExpressionSyntax {
-    let left = this.parsePrimaryExpression();
-
-    while (
-      this.current.kind === "StarToken" ||
-      this.current.kind === "SlashToken"
-    ) {
-      const operatorToken = this.nextToken();
-      const right = this.parsePrimaryExpression();
-      left = new BinaryExpressionSyntax(left, operatorToken, right);
-    }
-
-    return left;
-  }
-
   private peek(offset: number) {
     const index = this.position + offset;
     if (index >= this.tokens.length) {
@@ -93,8 +64,29 @@ export class Parser {
     return new SyntaxToken(kind, this.current.position);
   }
 
-  private parseExpression(): ExpressionSyntax {
-    return this.parseTerm();
+  private parseExpression(parentPrecedence: number = 0): ExpressionSyntax {
+    let left: ExpressionSyntax;
+    const unaryOperatorPrecedence = unaryOperatorPrecedenceOf(this.current.kind);
+    if (unaryOperatorPrecedence !== 0 && unaryOperatorPrecedence >= parentPrecedence) {
+      const operatorToken = this.nextToken();
+      const operand = this.parseExpression(unaryOperatorPrecedence);
+      left = new UnaryExpressionSyntax(operatorToken, operand);
+
+    } else {
+      left = this.parsePrimaryExpression();
+    }
+
+    while (true) {
+      const precedence = binaryOperatorPrecedenceOf(this.current.kind);
+      if (precedence === 0 || precedence <= parentPrecedence) {
+        break;
+      }
+      const operatorToken = this.nextToken();
+      const right = this.parseExpression(precedence);
+      left = new BinaryExpressionSyntax(left, operatorToken, right);
+    }
+
+    return left;
   }
 
   private parsePrimaryExpression(): ExpressionSyntax {

@@ -1,6 +1,8 @@
 export type SyntaxKind =
-  | "NumberToken"
+  | "BadToken"
+  | "EndOfFileToken"
   | "WhitespaceToken"
+  | "NumberToken"
   | "PlusToken"
   | "MinusToken"
   | "SlashToken"
@@ -8,8 +10,7 @@ export type SyntaxKind =
   | "PercentToken"
   | "OpenParenthesesToken"
   | "CloseParenthesesToken"
-  | "BadToken"
-  | "EndOfFileToken"
   | "LiteralExpression"
   | "BinaryExpression"
-  | "ParenthesizedExpression";
+  | "ParenthesizedExpression"
+  | "UnaryExpression";

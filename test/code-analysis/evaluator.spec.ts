@@ -1,10 +1,10 @@
 import { Evaluator } from "../../src/code-analysis/evaluator";
-import { ExpressionSyntax } from "../../src/code-analysis/expression-syntax";
-import { BinaryExpressionSyntax } from "../../src/code-analysis/expression-syntax-binary";
-import { LiteralExpressionSyntax } from "../../src/code-analysis/expression-syntax-literal";
-import { ParenthesizedExpressionSyntax } from "../../src/code-analysis/expression-syntax-parenthesis";
 import { SyntaxKind } from "../../src/code-analysis/syntax-kind";
 import { SyntaxToken } from "../../src/code-analysis/syntax-token";
+import { ExpressionSyntax } from "../../src/code-analysis/syntax/expression-syntax";
+import { BinaryExpressionSyntax } from "../../src/code-analysis/syntax/expression-syntax-binary";
+import { LiteralExpressionSyntax } from "../../src/code-analysis/syntax/expression-syntax-literal";
+import { ParenthesizedExpressionSyntax } from "../../src/code-analysis/syntax/expression-syntax-parenthesis";
 
 describe("the evaluator", () => {
   function arrange(syntax: ExpressionSyntax) {

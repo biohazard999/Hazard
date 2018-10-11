@@ -1,3 +1,3 @@
-import { SyntaxNode } from "./syntax-node";
+import { SyntaxNode } from "../syntax-node";
 
 export abstract class ExpressionSyntax extends SyntaxNode {}

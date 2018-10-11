@@ -1,7 +1,8 @@
-import { ExpressionSyntax } from "./expression-syntax";
-import { BinaryExpressionSyntax } from "./expression-syntax-binary";
-import { LiteralExpressionSyntax } from "./expression-syntax-literal";
-import { ParenthesizedExpressionSyntax } from "./expression-syntax-parenthesis";
+import { ExpressionSyntax } from "./syntax/expression-syntax";
+import { BinaryExpressionSyntax } from "./syntax/expression-syntax-binary";
+import { LiteralExpressionSyntax } from "./syntax/expression-syntax-literal";
+import { ParenthesizedExpressionSyntax } from "./syntax/expression-syntax-parenthesis";
+import { UnaryExpressionSyntax } from "./syntax/expression-syntax-unary";
 
 export class Evaluator {
   constructor(private root: ExpressionSyntax) {}
@@ -13,6 +14,17 @@ export class Evaluator {
   private evaluateExpression(node: ExpressionSyntax): number {
     if (node instanceof LiteralExpressionSyntax) {
       return node.literalToken.value as number;
+    }
+
+    if (node instanceof UnaryExpressionSyntax) {
+      const operand = this.evaluateExpression(node.operand);
+      if (node.kind === "PlusToken") {
+        return operand;
+      } else if (node.kind === "MinusToken") {
+        return -operand;
+      } else {
+        throw new Error(`Unexpected unary operator ${node.kind}`);
+      }
     }
 
     if (node instanceof BinaryExpressionSyntax) {
